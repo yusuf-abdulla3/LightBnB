@@ -27,9 +27,9 @@ const getUserWithEmail = function(email) {
   SELECT *
   FROM users
   WHERE users.email = $1;
-  `
+  `;
   return pool
-  .query(queryString, [email])
+    .query(queryString, [email])
     .then(res => {
       if(res.rows) {
         return res.rows[0];
@@ -48,13 +48,13 @@ exports.getUserWithEmail = getUserWithEmail;
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
  */
- const getUserWithId = function(id) {
+const getUserWithId = function(id) {
   const queryString = `
   SELECT * FROM users
   WHERE users.id = $1
   `;
   return pool
-  .query(queryString, [id])
+    .query(queryString, [id])
     .then(res => {
       if (res.rows) {
         return res.rows[0];
@@ -63,7 +63,7 @@ exports.getUserWithEmail = getUserWithEmail;
       }
     })
     .catch(err => console.log('query error:', err));
-}
+};
 exports.getUserWithId = getUserWithId;
 
 
@@ -72,7 +72,7 @@ exports.getUserWithId = getUserWithId;
  * @param {{name: string, password: string, email: string}} user
  * @return {Promise<{}>} A promise to the user.
  */
- const addUser =  function(user) {
+const addUser =  function(user) {
   const queryString = `
   INSERT INTO users (name, email, password)
   VALUES ($1, $2, $3)
@@ -80,14 +80,14 @@ exports.getUserWithId = getUserWithId;
   `;
   const values = [user.name, user.email, user.password];
   return pool
-  .query(queryString, values)
+    .query(queryString, values)
     .then(res => {
       return res.rows[0];
     })
     .catch(err => {
       return console.log('query error:', err);
-    })
-}
+    });
+};
 exports.addUser = addUser;
 
 /// Reservations
@@ -110,13 +110,13 @@ const getAllReservations = function(guest_id, limit = 10) {
   `;
   const values = [guest_id, limit];
   return pool
-  .query(queryString, values)
+    .query(queryString, values)
     .then(res => {
       return res.rows[0];
     })
     .catch(err => {
       return console.log('query error:', err);
-    })
+    });
 };
 exports.getAllReservations = getAllReservations;
 
@@ -130,7 +130,7 @@ exports.getAllReservations = getAllReservations;
  */
 
 
- const getAllProperties = function(options, limit = 10) {
+const getAllProperties = function(options, limit = 10) {
 
   const queryParams = [];
 
@@ -197,8 +197,8 @@ exports.getAllProperties = getAllProperties;
  * @return {Promise<{}>} A promise to the property.
  */
 const addProperty = function(property) {
-  const quertString = 
-  ` 
+  const queryString =
+  `
   INSERT INTO properties (owner_id, title, description, thumbnail_photo_url, cover_photo_url, cost_per_night, street, city, province, post_code, country, parking_spaces, number_of_bathrooms, number_of_bedrooms)
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
   RETURNING *;
@@ -207,13 +207,13 @@ const addProperty = function(property) {
   const values = [property.owner_id, property.title, property.description, property.thumbnail_photo_url, property.cover_photo_url, property.cost_per_night, property.street, property.city, property.province, property.post_code, property.country, property.parking_spaces, property.number_of_bathrooms, property.number_of_bedrooms];
   
   return pool
-  .query(queryString, values)
+    .query(queryString, values)
     .then(res => {
       return res.rows[0];
     })
     .catch(err => {
       return console.log('query error:', err);
-    })
+    });
 };
 exports.addProperty = addProperty;
 
